@@ -1,136 +1,453 @@
-# User Dashboard
-A modern, responsive user dashboard application built with React, TypeScript, Vite, and Tailwind CSS. This application fetches user data from the JSONPlaceholder API and displays it in an elegant, interactive interface.
+<div align="center">
 
-## Features
+# 🚀 User Dashboard
 
-- **Responsive Design** - Optimized for mobile, tablet, and desktop devices
-- **User Cards** - Clean card layout displaying user information (Name, Email, Company, City)
-- **Detailed View** - Click any user card to open a modal with complete user information including phone, website, and full address
-- **Search Functionality** - Real-time search to filter users by name
-- **Sorting Options** - Sort users by name or company
-- **Dark/Light Mode** - Toggle between dark and light themes with persistent preference
-- **Loading States** - Smooth loading spinner during data fetch
-- **Error Handling** - Graceful error messages with retry functionality
-- **Smooth Animations** - Polished transitions and hover effects
-- **Modern UI** - Clean, professional design with attention to detail
+<img src="screenshot-dark.png" width="100%" alt="User Dashboard - Dark Mode" style="border-radius: 12px; margin-bottom: 16px;" />
 
-## Tech Stack
+<p align="center">
+  <strong>A blazing-fast, beautifully designed User Dashboard built with React + TypeScript + Vite</strong><br/>
+  <sub>Search • Sort • Dark Mode • Real-time filtering • Smooth animations</sub>
+</p>
 
-- **React 18** - Modern React with hooks
-- **TypeScript** - Type-safe code
-- **Vite** - Fast build tool and dev server
-- **Tailwind CSS** - Utility-first CSS framework
-- **Lucide React** - Beautiful, consistent icons
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18.3.1-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-5.6.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Vite-5.4.8-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+</p>
 
-## Project Structure
+<p align="center">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" />
+  <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen?style=flat-square" />
+  <img src="https://img.shields.io/badge/Status-Live-success?style=flat-square" />
+  <img src="https://img.shields.io/badge/API-JSONPlaceholder-orange?style=flat-square" />
+</p>
+
+</div>
+
+---
+
+## 🌓 Light & Dark Mode
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="screenshot-dark.png" width="100%" alt="Dark Mode" />
+      <br/><strong>🌑 Dark Mode</strong>
+    </td>
+    <td align="center" width="50%">
+      <img src="screenshot-light.png" width="100%" alt="Light Mode" />
+      <br/><strong>☀️ Light Mode</strong>
+    </td>
+  </tr>
+</table>
+
+---
+
+## ✨ Features at a Glance
+
+| Feature | Description |
+|--------|-------------|
+| 🔍 **Real-time Search** | Instantly filter users by name as you type |
+| ↕️ **Smart Sorting** | Sort alphabetically by name or company |
+| 🌙 **Dark / Light Mode** | Persistent theme toggle with system preference detection |
+| 📋 **Copy Email** | One-click email copy with visual feedback |
+| 🖼️ **Avatar Generation** | Auto-generated initials avatars for every user |
+| 🪟 **Detail Modal** | Click any card to open a full-detail modal with animations |
+| ⚡ **Skeleton Loading** | Shimmer loading placeholders during data fetch |
+| ❌ **Error Handling** | Graceful error states with retry support |
+| 📱 **Fully Responsive** | 1 / 2 / 3 column grid adapts to any screen size |
+| 🎨 **Smooth Animations** | Scale, hover, slide-up, and fade transitions throughout |
+
+---
+
+## 🏗️ Architecture Overview
 
 ```
-src/
-├── components/
-│   ├── ErrorMessage.tsx      # Error display with retry button
-│   ├── LoadingSpinner.tsx    # Loading state indicator
-│   ├── SearchBar.tsx          # Search input component
-│   ├── SortControls.tsx       # Sort dropdown component
-│   ├── ThemeToggle.tsx        # Dark/light mode toggle
-│   ├── UserCard.tsx           # User card display
-│   └── UserModal.tsx          # Detailed user information modal
-├── types/
-│   └── user.ts                # TypeScript interfaces for User data
-├── App.tsx                    # Main application component
-├── main.tsx                   # Application entry point
-└── index.css                  # Global styles and animations
+┌─────────────────────────────────────────────────────────────────┐
+│                        User Dashboard App                        │
+│                                                                   │
+│  ┌───────────────────────────────────────────────────────────┐   │
+│  │                      App.tsx (Root)                        │   │
+│  │                                                             │   │
+│  │  State: users[] | loading | error | searchQuery | sortBy  │   │
+│  │                    selectedUser | isDark                   │   │
+│  └─────────────────────────┬─────────────────────────────────┘   │
+│                             │                                     │
+│         ┌───────────────────┼───────────────────┐                │
+│         ▼                   ▼                   ▼                │
+│  ┌─────────────┐   ┌──────────────────┐  ┌───────────────┐      │
+│  │   Header    │   │      Main        │  │  UserModal    │      │
+│  │             │   │                  │  │  (Overlay)    │      │
+│  │ SearchBar   │   │ LoadingSpinner   │  │               │      │
+│  │ SortControls│   │ ErrorMessage     │  │ Full Details  │      │
+│  │ ThemeToggle │   │ UserCard × N     │  │ Address       │      │
+│  └─────────────┘   └──────────────────┘  │ Company Info  │      │
+│                                           └───────────────┘      │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-## Getting Started
+---
+
+## 🔄 Application Flow
+
+```
+                         ┌──────────────────┐
+                         │   App Launches    │
+                         └────────┬─────────┘
+                                  │
+                    ┌─────────────▼─────────────┐
+                    │  Read localStorage theme   │
+                    │  Apply dark/light class    │
+                    └─────────────┬─────────────┘
+                                  │
+                    ┌─────────────▼─────────────┐
+                    │  Fetch users from API      │
+                    │  jsonplaceholder.typicode  │
+                    └──────┬──────────┬──────────┘
+                           │          │
+                     ✅ OK │          │ ❌ Error
+                           │          │
+              ┌────────────▼──┐  ┌────▼──────────────┐
+              │  setUsers([]) │  │  setError(message) │
+              └────────┬──────┘  └────────┬───────────┘
+                       │                  │
+              ┌────────▼──────┐  ┌────────▼───────────┐
+              │ Display Cards │  │  Show Error + Retry │
+              └────────┬──────┘  └─────────────────────┘
+                       │
+          ┌────────────┼─────────────┐
+          │            │             │
+   ┌──────▼──────┐  ┌──▼────┐  ┌────▼────────┐
+   │ User types  │  │ User  │  │  User clicks │
+   │ in search   │  │ sorts │  │   a card    │
+   └──────┬──────┘  └──┬────┘  └────┬────────┘
+          │            │             │
+   ┌──────▼──────┐  ┌──▼────────┐  ┌▼──────────────┐
+   │  Filter by  │  │ Sort A→Z  │  │  Open Modal   │
+   │  name query │  │ by name / │  │  with full    │
+   │  (useMemo)  │  │ company   │  │  user details │
+   └─────────────┘  └───────────┘  └───────────────┘
+```
+
+---
+
+## 🧩 Component Hierarchy
+
+```
+App
+├── <header>
+│   ├── UsersIcon + Title
+│   ├── ThemeToggle          → toggles isDark state
+│   ├── SearchBar            → controlled input → setSearchQuery
+│   └── SortControls         → select dropdown → setSortBy
+│
+├── <main>
+│   ├── LoadingSpinner        (conditional: loading === true)
+│   │   └── 6× Skeleton Cards
+│   │
+│   ├── ErrorMessage          (conditional: error !== null)
+│   │   ├── AlertCircle icon
+│   │   └── Retry Button → fetchUsers()
+│   │
+│   ├── EmptyState            (conditional: results.length === 0)
+│   │   └── Clear Search Button
+│   │
+│   └── UserCard × N          (conditional: results.length > 0)
+│       ├── Avatar Image
+│       ├── Name
+│       ├── Email + CopyButton
+│       ├── Company
+│       └── City
+│
+└── UserModal                 (conditional: selectedUser !== null)
+    ├── Avatar (large)
+    ├── Name + Username
+    ├── Email + Phone + Website + Company (grid)
+    ├── Address Block
+    └── Company Catchphrase + BS
+```
+
+---
+
+## 🗂️ Project Structure
+
+```
+user-dashboard/
+│
+├── 📄 index.html                  # Entry HTML
+├── 📦 package.json                # Dependencies & scripts
+├── ⚙️  vite.config.ts              # Vite bundler config
+├── 🎨 tailwind.config.js          # Tailwind + dark mode setup
+├── 🔧 tsconfig.app.json           # TypeScript config
+│
+└── src/
+    ├── 🚀 main.tsx                # React DOM entry point
+    ├── 🏠 App.tsx                 # Root component + all state
+    ├── 🎨 index.css               # Tailwind + custom animations
+    │
+    ├── types/
+    │   └── 📐 user.ts             # User / Address / Company interfaces
+    │
+    └── components/
+        ├── 🃏 UserCard.tsx        # Individual user card
+        ├── 🪟 UserModal.tsx       # Detail overlay modal
+        ├── 🔍 SearchBar.tsx       # Controlled search input
+        ├── ↕️  SortControls.tsx    # Sort dropdown
+        ├── 🌙 ThemeToggle.tsx     # Dark/light toggle button
+        ├── ⏳ LoadingSpinner.tsx  # Skeleton loading grid
+        └── ❌ ErrorMessage.tsx    # Error state with retry
+```
+
+---
+
+## 🔀 Data Flow Diagram
+
+```
+  JSONPlaceholder API
+  /users endpoint
+         │
+         │  fetch()
+         ▼
+  ┌─────────────┐     error     ┌──────────────────┐
+  │  fetchUsers │ ─────────────▶│  ErrorMessage    │
+  │  (async)    │               │  + Retry Button  │
+  └──────┬──────┘               └──────────────────┘
+         │ success
+         ▼
+  ┌─────────────────────────────────────────────────────┐
+  │                  users[ ] (React State)              │
+  └─────────────────────────┬───────────────────────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+         searchQuery       sortBy      (unchanged)
+              │              │
+              └──────┬───────┘
+                     │ useMemo
+                     ▼
+  ┌──────────────────────────────────────────────────────┐
+  │           filteredAndSortedUsers[ ]                   │
+  │   filter(name includes searchQuery)                   │
+  │   .sort(by name | company)                           │
+  └──────────────────────────┬───────────────────────────┘
+                              │
+                  ┌───────────▼───────────┐
+                  │  UserCard × N Render  │
+                  └───────────────────────┘
+```
+
+---
+
+## 🎨 Theme System
+
+```
+  User clicks ThemeToggle
+         │
+         ▼
+  ┌──────────────────────┐
+  │  setIsDark(!isDark)  │
+  └──────────┬───────────┘
+             │
+    ┌────────▼─────────┐
+    │  useEffect fires  │
+    └────────┬──────────┘
+             │
+     ┌───────┴────────┐
+     │                │
+  isDark?          !isDark?
+     │                │
+  ┌──▼──────────┐  ┌──▼──────────────┐
+  │ Add 'dark'  │  │ Remove 'dark'   │
+  │ class to    │  │ class from      │
+  │ <html>      │  │ <html>          │
+  │             │  │                 │
+  │ localStorage│  │ localStorage    │
+  │ = 'dark'    │  │ = 'light'       │
+  └─────────────┘  └─────────────────┘
+         │
+         ▼
+  All Tailwind dark: variants activate
+  Smooth CSS transitions apply
+```
+
+---
+
+## ⚡ Tech Stack
+
+<table>
+  <tr>
+    <th>Layer</th>
+    <th>Technology</th>
+    <th>Purpose</th>
+  </tr>
+  <tr>
+    <td>⚛️ UI Framework</td>
+    <td>React 18 + TypeScript</td>
+    <td>Component model, hooks, type safety</td>
+  </tr>
+  <tr>
+    <td>⚡ Build Tool</td>
+    <td>Vite 5</td>
+    <td>HMR, fast builds, ESM bundling</td>
+  </tr>
+  <tr>
+    <td>🎨 Styling</td>
+    <td>Tailwind CSS 3.4</td>
+    <td>Utility-first, dark mode, responsive</td>
+  </tr>
+  <tr>
+    <td>🔣 Icons</td>
+    <td>Lucide React</td>
+    <td>Consistent, tree-shakeable SVG icons</td>
+  </tr>
+  <tr>
+    <td>🌐 Data Source</td>
+    <td>JSONPlaceholder API</td>
+    <td>Free REST API with mock user data</td>
+  </tr>
+  <tr>
+    <td>🧹 Linting</td>
+    <td>ESLint + TypeScript-ESLint</td>
+    <td>Code quality & consistency</td>
+  </tr>
+</table>
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (version 16 or higher)
-- npm or yarn
+```
+Node.js >= 16
+npm or yarn
+```
 
-### Installation
+### Installation & Development
 
-1. Clone the repository:
 ```bash
+# 1. Clone the repository
 git clone <repository-url>
 cd user-dashboard
-```
 
-2. Install dependencies:
-```bash
+# 2. Install dependencies
 npm install
-```
 
-3. Start the development server:
-```bash
+# 3. Start development server
 npm run dev
+
+# 4. Open in browser
+# → http://localhost:5173
 ```
 
-4. Open your browser and navigate to `http://localhost:5173`
-
-### Build for Production
+### Production Build
 
 ```bash
+# Build for production
 npm run build
-```
 
-The production-ready files will be in the `dist/` directory.
-
-### Preview Production Build
-
-```bash
+# Preview the production build
 npm run preview
+
+# Type-check without emitting
+npm run typecheck
+
+# Lint codebase
+npm run lint
 ```
 
-## Usage
+---
 
-1. **Browse Users** - Scroll through the user cards to see basic information
-2. **Search** - Type in the search bar to filter users by name
-3. **Sort** - Use the dropdown to sort users by name or company
-4. **View Details** - Click any user card to see detailed information in a modal
-5. **Toggle Theme** - Click the sun/moon icon to switch between light and dark modes
+## 📱 Responsive Breakpoints
 
-## API
+```
+  Mobile (< 768px)          Tablet (768px–1024px)      Desktop (> 1024px)
+  ┌────────────────┐         ┌──────────┬──────────┐    ┌──────┬──────┬──────┐
+  │                │         │          │          │    │      │      │      │
+  │  [User Card]   │         │  [Card]  │  [Card]  │    │[Card]│[Card]│[Card]│
+  │                │         │          │          │    │      │      │      │
+  ├────────────────┤         ├──────────┼──────────┤    ├──────┼──────┼──────┤
+  │                │         │          │          │    │      │      │      │
+  │  [User Card]   │         │  [Card]  │  [Card]  │    │[Card]│[Card]│[Card]│
+  │                │         │          │          │    │      │      │      │
+  └────────────────┘         └──────────┴──────────┘    └──────┴──────┴──────┘
+   grid-cols-1                 grid-cols-2                grid-cols-3
+```
 
-This application uses the [JSONPlaceholder](https://jsonplaceholder.typicode.com/) API to fetch user data:
+---
 
-- Endpoint: `https://jsonplaceholder.typicode.com/users`
-- Returns 10 sample users with complete information
+## 🔌 API Reference
 
-## Features in Detail
+**Endpoint:** `GET https://jsonplaceholder.typicode.com/users`
 
-### Responsive Layout
-- Mobile: Single column card layout
-- Tablet: Two column grid
-- Desktop: Three column grid
+```jsonc
+// Example User Object
+{
+  "id": 1,
+  "name": "Leanne Graham",
+  "username": "Bret",
+  "email": "Sincere@april.biz",
+  "address": {
+    "street": "Kulas Light",
+    "suite": "Apt. 556",
+    "city": "Gwenborough",
+    "zipcode": "92998-3874"
+  },
+  "phone": "1-770-736-0988 x56442",
+  "website": "hildegard.org",
+  "company": {
+    "name": "Romaguera-Crona",
+    "catchPhrase": "Multi-layered client-server neural-net",
+    "bs": "harness real-time e-markets"
+  }
+}
+```
 
-### Search & Sort
-- Real-time search filtering
-- Case-insensitive search
-- Sort by name (alphabetical)
-- Sort by company name (alphabetical)
+---
 
-### Theme Support
-- Automatic dark mode detection based on system preferences
-- Manual toggle with persistent storage
-- Smooth theme transitions
+## 🧠 State Management
 
-### Error Handling
-- Network error detection
-- User-friendly error messages
-- Retry functionality
+```
+App Component State
+┌────────────────────────────────────────────────────────────┐
+│                                                             │
+│  users:          User[]     ← fetched from API             │
+│  loading:        boolean    ← true during fetch            │
+│  error:          string?    ← null on success              │
+│  searchQuery:    string     ← controlled by SearchBar      │
+│  sortBy:         name|co.   ← controlled by SortControls   │
+│  selectedUser:   User?      ← null = no modal open         │
+│  isDark:         boolean    ← persisted in localStorage    │
+│                                                             │
+│  filteredAndSortedUsers: User[]  ← derived via useMemo     │
+│  (recomputes only when users / searchQuery / sortBy change)│
+│                                                             │
+└────────────────────────────────────────────────────────────┘
+```
 
-## Browser Support
+---
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+## 🤝 Contributing
 
-## License
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
 
-MIT
+---
 
-## Author
+## 📄 License
 
-Built with React, TypeScript, and Tailwind CSS
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+Built with ❤️ using **React**, **TypeScript**, and **Tailwind CSS**
+
+⭐ Star this repo if you found it useful!
+
+</div>
