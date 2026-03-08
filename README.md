@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 User Dashboard
+# 🚀 User Dashboard.
 
 <img src="screenshot-dark.png" width="100%" alt="User Dashboard - Dark Mode" style="border-radius: 12px; margin-bottom: 16px;" />
 
