@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/screenshots/screenshot-dark.png" width="100%" alt="User Dashboard Banner" />
+<img src="screenshot-dark.png" width="100%" alt="User Dashboard Banner" />
 
 <br/><br/>
 
@@ -66,12 +66,12 @@
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="assets/screenshots/screenshot-dark.png" width="100%" alt="Dark Mode Preview" />
+      <img src="screenshot-dark.png" width="100%" alt="Dark Mode Preview" />
       <br/><br/>
       <kbd>🌑 Dark Mode</kbd>
     </td>
     <td align="center" width="50%">
-      <img src="assets/screenshots/screenshot-light.png" width="100%" alt="Light Mode Preview" />
+      <img src="screenshot-light.png" width="100%" alt="Light Mode Preview" />
       <br/><br/>
       <kbd>☀️ Light Mode</kbd>
     </td>
