@@ -86,9 +86,12 @@
 
 | 🔗 Resource | 📎 Link |
 |---|---|
-| 🌐 **Live App (Vercel)** | [api-powered-user-dashboard-assignme.vercel.app](https://api-powered-user-dashboard-assignme.vercel.app) |
-| 💻 **GitHub Repository** | [github.com/your-username/user-dashboard](https://github.com/your-username/user-dashboard) |
+| 🌐 **Live App (Vercel)** | [api-powered-user-dashboard-assignme.vercel.app](https://api-powered-user-dashboard-assignme.vercel.app/) |
+| 💻 **GitHub Repository** | [github.com/jaiashwinisatish/API-Powered-User-Dashboard-Assignment](https://github.com/jaiashwinisatish/API-Powered-User-Dashboard-Assignment) |
+| 📄 **Project README** | [View README](https://github.com/jaiashwinisatish/API-Powered-User-Dashboard-Assignment/blob/main/README.md) |
 | 🎯 **API Endpoint Used** | [jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users) |
+
+</div>|
 
 </div>
 
