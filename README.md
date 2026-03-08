@@ -1,5 +1,4 @@
-# User Dashboard...
-
+# User Dashboard
 A modern, responsive user dashboard application built with React, TypeScript, Vite, and Tailwind CSS. This application fetches user data from the JSONPlaceholder API and displays it in an elegant, interactive interface.
 
 ## Features
